@@ -10,28 +10,28 @@ provider:
 
 functions:
    crearPersonaje:
-    handler: handler.crearPersonaje
+    handler: index.crearPersonaje
     events:
       - http:
           path: personajes
           method: post
 
   obtenerPersonajes:
-    handler: handler.obtenerPersonajes
+    handler: index.obtenerPersonajes
     events:
       - http:
           path: personajes
           method: get
 
   actualizarPersonaje:
-    handler: handler.actualizarPersonaje
+    handler: index.actualizarPersonaje
     events:
       - http:
           path: personajes/{id}
           method: put
 
   eliminarPersonaje:
-    handler: handler.eliminarPersonaje
+    handler: index.eliminarPersonaje
     events:
       - http:
           path: personajes/{id}
