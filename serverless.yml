@@ -1,0 +1,58 @@
+service: swapi-backend
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  environment:
+    TABLE_NAME: ${self:service}-table
+    IS_OFFLINE: ${opt:stage, 'dev'}
+
+functions:
+   crearPersonaje:
+    handler: handler.crearPersonaje
+    events:
+      - http:
+          path: personajes
+          method: post
+
+  obtenerPersonajes:
+    handler: handler.obtenerPersonajes
+    events:
+      - http:
+          path: personajes
+          method: get
+
+  actualizarPersonaje:
+    handler: handler.actualizarPersonaje
+    events:
+      - http:
+          path: personajes/{id}
+          method: put
+
+  eliminarPersonaje:
+    handler: handler.eliminarPersonaje
+    events:
+      - http:
+          path: personajes/{id}
+          method: delete
+plugins:
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    port: 4000
+
+resources:
+  Resources:
+    PersonajesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.TABLE_NAME}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
